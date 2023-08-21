@@ -3,6 +3,6 @@ import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	base: '/algebra_zavrsni_rad/',
+	base: '/zavrsni_rad/',
 	plugins: [react()],
 });
