@@ -1,4 +1,12 @@
-import React from 'react';
+import PropTypes from "prop-types";
+
+ChatMessage.propTypes = {
+	message: PropTypes.shape({
+		sender: PropTypes.string.isRequired,
+		text: PropTypes.string.isRequired,
+	}).isRequired,
+	nickname: PropTypes.string.isRequired,
+};
 
 function stringToColor(str) {
 	let hash = 0;
@@ -35,7 +43,6 @@ function ChatMessage({ message, nickname }) {
 		</div>
 	);
 }
-
 
 
 export default ChatMessage;

@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import {useState} from 'react';
+import PropTypes from "prop-types";
+
+LoginScreen.propTypes = {
+	onLogin: PropTypes.func.isRequired,
+};
 
 function LoginScreen({ onLogin }) {
 	const [inputValue, setInputValue] = useState('');
