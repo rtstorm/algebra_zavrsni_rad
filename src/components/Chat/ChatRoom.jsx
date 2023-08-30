@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import ChatMessage from './ChatMessage.jsx';
+import PropTypes from "prop-types";
+
+ChatRoom.propTypes = {
+	nickname: PropTypes.string.isRequired,
+};
 
 function ChatRoom({ nickname }) {
 	const [messages, setMessages] = useState([]);
@@ -16,14 +21,14 @@ function ChatRoom({ nickname }) {
 			setMessages(JSON.parse(storedMessages));
 		}
 
-		const droneInstance = new window.Scaledrone('Ja8jCcO4GAhbLeBY');
+		const droneInstance = new window.Scaledrone(import.meta.env.VITE_CHANNEL_ID);
 
 		droneInstance.on('open', error => {
 			if (error) {
 				return console.error(error);
 			}
 
-			const room = droneInstance.subscribe('AlgebraChatApp');
+			const room = droneInstance.subscribe(import.meta.env.VITE_ROOM_NAME);
 			room.on('open', error => {
 				if (error) {
 					return console.error(error);
@@ -33,7 +38,11 @@ function ChatRoom({ nickname }) {
 
 			room.on('message', message => {
 				setMessages((messages) => {
-					const newMessages = [...messages, { member: message.member, text: message.data.text, sender: message.data.sender }];
+					const newMessages = [...messages, {
+						member: message.member,
+						text: message.data.text,
+						sender: message.data.sender
+					}];
 					localStorage.setItem('messages', JSON.stringify(newMessages));
 					return newMessages;
 				});
@@ -43,7 +52,7 @@ function ChatRoom({ nickname }) {
 		});
 
 		return () => {
-			droneInstance.unsubscribe('AlgebraChatApp');
+			droneInstance.unsubscribe(import.meta.env.VITE_ROOM_NAME);
 			droneInstance.close();
 		};
 	}, []);
@@ -57,7 +66,7 @@ function ChatRoom({ nickname }) {
 	const handleSendMessage = () => {
 		if (drone) {
 			drone.publish({
-				room: 'AlgebraChatApp',
+				room: import.meta.env.VITE_ROOM_NAME,
 				message: {
 					text: inputValue,
 					sender: nickname,
@@ -76,7 +85,7 @@ function ChatRoom({ nickname }) {
 			</button>
 			<div className="flex-1 overflow-auto p-36">
 				{messages.map((message, index) => (
-					<ChatMessage key={index} message={message} nickname={nickname} />
+					<ChatMessage key={index} message={message} nickname={nickname}/>
 				))}
 			</div>
 			<div className="p-20">
